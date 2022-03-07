@@ -7,7 +7,7 @@ import {
 } from '@ant-design/icons';
 import axios from 'axios';
 import './index.css';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate,useLocation } from 'react-router-dom';
 // import Sider from 'antd/lib/layout/Sider'
 const { Sider } = Layout;
 const { SubMenu } = Menu;
@@ -76,6 +76,10 @@ export default function SideMenu() {
   }
 
   let navigate = useNavigate()
+  let location = useLocation()
+  let selectKey = [location.pathname]
+  let defaultOpenKeys = ['/' + location.pathname.split("/")[1]]
+  console.log('location',location.pathname.split("/")[1]);
   const renderMenu = (menuList) => {
     return menuList.map((item) => {
       if (item.children?.length > 0 && checkPagePermission(item)) {
@@ -99,7 +103,9 @@ export default function SideMenu() {
       <div style={{display:'flex',height:"100%","flexDirection":"column"}}>
         <div className="logo">版本发布管理系统</div>
         <div style={{flex:1,"overflow":"auto"}}>
-          <Menu theme="dark" mode="inline" defaultSelectedKeys={['3']}>
+        {/* defaultOpenKeys 是默认打开的下拉 、 defaultSelectedKeys 是默认选中的标签 */}
+        {/* 加defaut是非受控组件，不加default是受控组件，受控即可以实时响应数据变化的组件 */}
+          <Menu theme="dark" mode="inline" defaultOpenKeys={defaultOpenKeys} defaultSelectedKeys={selectKey}>
           {renderMenu(menu)}
         </Menu>
         </div>
